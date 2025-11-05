@@ -1,0 +1,23 @@
+shwetabh123/mall-customers  
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+df = pd.read_csv('mall.csv', names=['CustomerID', 'Genre', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)'], header=0)
+le = LabelEncoder()
+df['Genre'] = le.fit_transform(df['Genre']
+from sklearn.model_selection import train_test_split
+X = df[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']]
+y = df['Genre']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(random_state=42)
+clf.fit(X_train, y_train)
+
+from sklearn.metrics import accuracy_score, classification_report
+y_pred = clf.predict(X_test)
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print(classification_report(y_test, y_pred))
+from sklearn.model_selection import cross_val_score
+cv_scores = cross_val_score(clf, X, y, cv=5)
+print("Cross-Validation scores:", cv_scores)
+print("Mean CV Score:", cv_scores.mean())
+print("Std Dev CV Score:", cv_scores.std())
